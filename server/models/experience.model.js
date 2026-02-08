@@ -21,11 +21,7 @@ const experienceSchema = new mongoose.Schema(
       min: 0,
       max: 10
     },
-    review: String,
-    completed: {
-      type: Boolean,
-      default: false
-    }
+    review: String
   },
   { timestamps: true }
 );
