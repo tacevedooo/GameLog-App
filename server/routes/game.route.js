@@ -20,4 +20,27 @@ router.get(
   gameController.getAll
 );
 
+// Get game by ID → any authenticated user
+router.get(
+  "/:id",
+  auth,
+  gameController.getById
+);
+
+// Update game → ONLY admin
+router.put(
+  "/:id",
+  auth,
+  role("admin"),
+  gameController.update
+);
+
+// Delete game → ONLY admin
+router.delete(
+  "/:id",
+  auth,
+  role("admin"),
+  gameController.delete
+);
+
 export default router;
