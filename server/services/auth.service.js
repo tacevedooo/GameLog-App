@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import * as userRepository from '../repositories/user.repository.js'
+import userRepository from '../repositories/user.repository.js'
 
-export const register = async (username, email, password, role) => {
+export const register = async (username, email, password) => {
 
-  const existingUser = await userRepository.findUserByEmail(email)
+  const existingUser = await userRepository.findByEmail(email)
   if (existingUser) {
     throw new Error('User already exists')
   }
@@ -14,12 +14,9 @@ export const register = async (username, email, password, role) => {
   const userData = {
     username,
     email,
-    password: hashedPassword
+    password: hashedPassword,
+    role: "user"
   };
-
-  if (role === "admin") {
-    userData.role = "admin";
-  }
 
   const user = await userRepository.create(userData);
 
@@ -31,7 +28,7 @@ export const register = async (username, email, password, role) => {
 }
 
 export const login = async (email, password) => {
-  const user = await userRepository.findUserByEmail(email)
+  const user = await userRepository.findByEmail(email)
   if (!user) {
     throw new Error('User not found')
   }

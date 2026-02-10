@@ -1,35 +1,53 @@
-import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import { errorHandler, routeNotFound } from "./middleware/errorMiddleware.js";
-import routes from "./routes/index.js";
+
+import authRoutes from "./routes/auth.route.js";
+import gameRoutes from "./routes/game.route.js";
+import experienceRoutes from "./routes/experience.route.js";
 import dbConnection from "./config/db.js";
 
 dotenv.config();
 
+/* -------------------- DATABASE -------------------- */
 dbConnection();
 
-const port = process.env.PORT || 8800;
-
+/* -------------------- APP -------------------- */
 const app = express();
+const port = process.env.PORT || 5000;
 
+/* -------------------- CORS -------------------- */
 app.use(
   cors({
-    origin: ["https://mern-task-manager-app.netlify.app", "http://localhost:3000", "http://localhost:3001"],
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001"
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
   })
 );
 
+/* -------------------- TEST ROUTE -------------------- */
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "🚀 GameLog API is running",
+    environment: process.env.NODE_ENV
+  });
+});
+
+
+/* -------------------- MIDDLEWARES -------------------- */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cookieParser());
+/* -------------------- ROUTES -------------------- */
+app.use("/api/auth", authRoutes);
+app.use("/api/game", gameRoutes);
+app.use("/api/experience", experienceRoutes);
 
-app.use("/api", routes);
-
-app.use(routeNotFound);
-app.use(errorHandler);
-
-app.listen(port, () => console.log(`Server listening on ${port}`));
+/* -------------------- SERVER -------------------- */
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
