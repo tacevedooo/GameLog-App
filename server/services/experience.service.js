@@ -1,28 +1,22 @@
 import experienceRepository from "../repositories/experience.repository.js";
 
 class ExperienceService {
-  async createExperience(userId, gameId, data) {
-    const { hoursPlayed, rating, review } = data;
+  async createExperience(userId, data) {
+    const { gameId, rating, hoursPlayed, review } = data;
 
-    if (!userId || !gameId) {
-      throw new Error("User and Game are required");
+    if (!gameId) {
+      throw new Error("Game is required");
     }
 
-    if (rating !== undefined && (rating < 0 || rating > 10)) {
-      throw new Error("Rating must be between 0 and 10");
-    }
-
-    if (hoursPlayed !== undefined && hoursPlayed < 0) {
-      throw new Error("Hours played cannot be negative");
-    }
-
-    return await experienceRepository.create({
+    const experienceData = {
       user: userId,
-      game: gameId,
-      hoursPlayed,
+      gameId,
       rating,
+      hoursPlayed,
       review
-    });
+    };
+
+    return await experienceRepository.create(experienceData);
   }
 
   async getAllExperiences() {

@@ -3,14 +3,10 @@ import experienceService from "../services/experience.service.js";
 class ExperienceController {
   async create(req, res) {
     try {
-      const userId = req.user.id;           
-      const { gameId } = req.params;        
-      const data = req.body;
-
+      const userId = req.user.id;
       const experience = await experienceService.createExperience(
         userId,
-        gameId,
-        data
+        req.body
       );
 
       return res.status(201).json(experience);
