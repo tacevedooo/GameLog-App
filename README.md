@@ -10,7 +10,7 @@ The platform includes authentication, role-based access control, and a modern fr
 
 👥 Role-based authorization (Admin / User)
 
-🎮 Game management (CRUD – Admin only for create/update/delete)
+🎮 Game management
 
 ⭐ Track personal game experiences
 
