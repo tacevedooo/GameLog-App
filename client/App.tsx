@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import GamesPage from './pages/GamesPage';
 import GameDetailPage from './pages/GameDetailPage';
 import MyExperiencesPage from './pages/MyExperiencesPage';
+import GlobalExperiencesPage from './pages/GlobalExperiencesPage';
 import AdminGamesPage from './pages/AdminGamesPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -16,13 +17,13 @@ const App: React.FC = () => {
   useEffect(() => {
     if (token) {
       try {
-        // Simple manual JWT decode to get user info (role, id)
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-        setUser(JSON.parse(jsonPayload));
+        const decoded = JSON.parse(jsonPayload);
+        setUser(decoded);
       } catch (e) {
         console.error('Invalid token');
         handleLogout();
@@ -48,9 +49,10 @@ const App: React.FC = () => {
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8">
           <Routes>
             <Route path="/" element={<Navigate to="/games" />} />
-            <Route path="/games" element={token ? <GamesPage /> : <Navigate to="/login" />} />
-            <Route path="/games/:id" element={token ? <GameDetailPage /> : <Navigate to="/login" />} />
-            <Route path="/my-experiences" element={token ? <MyExperiencesPage /> : <Navigate to="/login" />} />
+            <Route path="/games" element={token ? <GamesPage user={user} /> : <Navigate to="/login" />} />
+            <Route path="/games/:id" element={token ? <GameDetailPage user={user} /> : <Navigate to="/login" />} />
+            <Route path="/my-experiences" element={token ? <MyExperiencesPage user={user} /> : <Navigate to="/login" />} />
+            <Route path="/community" element={token ? <GlobalExperiencesPage /> : <Navigate to="/login" />} />
             <Route path="/admin" element={user?.role === 'admin' ? <AdminGamesPage /> : <Navigate to="/games" />} />
             <Route path="/login" element={!token ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/games" />} />
             <Route path="/register" element={!token ? <RegisterPage onLogin={handleLogin} /> : <Navigate to="/games" />} />

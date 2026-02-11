@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Gamepad2, User, LogOut, LayoutDashboard, PlusCircle, Bookmark } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Gamepad2, LogOut, LayoutDashboard, Bookmark, Globe } from 'lucide-react';
 
 interface NavbarProps {
   user: any;
@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
         </Link>
 
         {user ? (
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 md:gap-8">
             <div className="hidden md:flex items-center gap-6">
               <Link to="/games" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 font-medium">
                 <Bookmark className="w-4 h-4" /> Games
@@ -28,16 +28,17 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
               <Link to="/my-experiences" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 font-medium">
                 <LayoutDashboard className="w-4 h-4" /> My Plays
               </Link>
-              {user.role === 'admin' && (
-                <Link to="/admin" className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1.5 font-medium">
-                  <PlusCircle className="w-4 h-4" /> Manage
-                </Link>
-              )}
+              <Link to="/community" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 font-medium">
+                <Globe className="w-4 h-4" /> Community
+              </Link>
             </div>
+            
             <div className="flex items-center gap-4 pl-4 border-l border-white/10">
-              <div className="flex flex-col items-end leading-tight mr-2 hidden sm:flex">
-                <span className="text-sm font-semibold text-white">{user.username}</span>
-                <span className="text-[10px] uppercase tracking-widest text-slate-400">{user.role}</span>
+              <div className="flex flex-col items-end leading-tight text-right">
+                <span className="text-sm font-bold text-white truncate max-w-[120px]">{user.username}</span>
+                <span className={`text-[10px] uppercase tracking-widest font-black ${user.role === 'admin' ? 'text-indigo-400' : 'text-emerald-400'}`}>
+                  {user.role}
+                </span>
               </div>
               <button 
                 onClick={onLogout}
