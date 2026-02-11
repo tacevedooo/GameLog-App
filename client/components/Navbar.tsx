@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Gamepad2, LogOut, LayoutDashboard, Bookmark, Globe } from 'lucide-react';
+import { Gamepad2, LogOut, LayoutDashboard, Bookmark, Globe, User } from 'lucide-react';
 
 interface NavbarProps {
   user: any;
@@ -33,19 +33,23 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
               </Link>
             </div>
             
+            {/* User Identity Section */}
             <div className="flex items-center gap-4 pl-4 border-l border-white/10">
-              <div className="flex flex-col items-end leading-tight text-right">
-                <span className="text-sm font-bold text-white truncate max-w-[120px]">{user.username}</span>
-                <span className={`text-[10px] uppercase tracking-widest font-black ${user.role === 'admin' ? 'text-indigo-400' : 'text-emerald-400'}`}>
-                  {user.role}
+              <div className="flex items-center gap-3 select-none">
+                <span className="text-sm font-black text-white tracking-tight truncate max-w-[150px]">
+                  {user.username}
                 </span>
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                  <User className="w-4 h-4 text-slate-400" />
+                </div>
               </div>
+              
               <button 
                 onClick={onLogout}
-                className="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2 rounded-lg transition-all"
+                className="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2.5 rounded-xl transition-all group"
                 title="Logout"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </button>
             </div>
           </div>
