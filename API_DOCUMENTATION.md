@@ -4,8 +4,6 @@
 
 GameLog is a RESTful API for managing video games and user gaming experiences. Users can track games they've played, rate them, log hours played, and write reviews.
 
-**Base URL:** `http://localhost:5000`
-
 **Version:** 1.0.0
 
 ---
